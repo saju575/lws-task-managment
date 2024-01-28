@@ -4,6 +4,8 @@ const initialState = {
   list: [],
   isSuccess: false,
   jobName: "",
+  status: "",
+  page: 1,
 };
 
 const projectsSlice = createSlice({
@@ -26,10 +28,16 @@ const projectsSlice = createSlice({
     setSearchName: (state, action) => {
       state.jobName = action.payload;
     },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+    setStatus: (state, action) => {
+      state.status = action.payload;
+    },
   },
 });
 
 export default projectsSlice.reducer;
 
-export const { addProject, updateProject, setSearchName } =
+export const { addProject, updateProject, setSearchName, setStatus, setPage } =
   projectsSlice.actions;

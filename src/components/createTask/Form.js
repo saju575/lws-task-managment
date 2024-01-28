@@ -20,12 +20,13 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const member = members.find((m) => m.name === memberName);
-    const project = projectName.find((p) => p.projectName === nameOfProject);
+
+    if (!taskName || !memberName || !nameOfProject || !deadline) return;
+
     addTask({
       taskName,
-      teamMember: member,
-      project,
+      teamMember: memberName,
+      project: nameOfProject,
       deadline,
       status: "inProgress",
     });
@@ -65,8 +66,8 @@ const Form = () => {
               <option value="" hidden>
                 Select Job
               </option>
-              {members.map((member) => (
-                <option key={member.id} value={member.name}>
+              {members?.payload?.map((member) => (
+                <option key={member._id} value={member._id}>
                   {member.name}
                 </option>
               ))}
@@ -84,8 +85,8 @@ const Form = () => {
               <option value="" hidden>
                 Select Project
               </option>
-              {projectName.map((name) => (
-                <option key={name.id} value={name.projectName}>
+              {projectName?.payload?.map((name) => (
+                <option key={name._id} value={name._id}>
                   {name.projectName}
                 </option>
               ))}

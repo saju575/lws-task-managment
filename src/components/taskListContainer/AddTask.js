@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const AddTask = () => {
   return (
-    <div className="justify-between mb-10 space-y-2 md:flex md:space-y-0">
+    <div className="justify-between space-y-2 md:flex md:space-y-0">
       <Link
         href="./AddNew.html"
         className="lws-addnew group"

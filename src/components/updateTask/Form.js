@@ -10,7 +10,7 @@ const Form = ({ task }) => {
     teamMember,
     project,
     deadline: time,
-    id,
+    _id,
   } = task;
   const { data: members, isSuccess: memberIsSuccess } =
     useGetMembersNameQuery();
@@ -19,22 +19,23 @@ const Form = ({ task }) => {
 
   const [updateTask, { isSuccess, isLoading }] = useUpdateTaskMutation();
   const [taskName, setTaskName] = useState(nameOfTask);
-  const [memberName, setMemberName] = useState(teamMember.name);
-  const [nameOfProject, setNameOfProject] = useState(project.projectName);
+  const [memberId, setMemberId] = useState(teamMember._id);
+  const [idOfProject, setIdOfProject] = useState(project._id);
   const [deadline, setDeadline] = useState(time);
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const member = members.find((m) => m.name === memberName);
-    const project = projectName.find((p) => p.projectName === nameOfProject);
+
+    if (!taskName || !memberId || !idOfProject || !deadline) return;
+
     updateTask({
-      id,
+      id: _id,
       data: {
         taskName,
-        teamMember: member,
-        project,
+        teamMember: memberId,
+        project: idOfProject,
         deadline,
       },
     });
@@ -68,33 +69,34 @@ const Form = ({ task }) => {
               name="teamMember"
               id="lws-teamMember"
               required
-              value={memberName}
-              onChange={(e) => setMemberName(e.target.value)}
+              value={memberId}
+              onChange={(e) => setMemberId(e.target.value)}
             >
               <option value="" hidden>
                 Select Job
               </option>
-              {members.map((member) => (
-                <option key={member.id} value={member.name}>
+              {members?.payload?.map((member) => (
+                <option key={member._id} value={member._id}>
                   {member.name}
                 </option>
               ))}
             </select>
           </div>
+
           <div className="fieldContainer">
             <label htmlFor="lws-projectName">Project Name</label>
             <select
               id="lws-projectName"
               name="projectName"
               required
-              value={nameOfProject}
-              onChange={(e) => setNameOfProject(e.target.value)}
+              value={idOfProject}
+              onChange={(e) => setIdOfProject(e.target.value)}
             >
               <option value="" hidden>
                 Select Project
               </option>
-              {projectName.map((name) => (
-                <option key={name.id} value={name.projectName}>
+              {projectName?.payload?.map((name) => (
+                <option key={name._id} value={name._id}>
                   {name.projectName}
                 </option>
               ))}

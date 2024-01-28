@@ -3,7 +3,7 @@ import { apiSlice } from "../api/apiSlice";
 export const membersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMembersName: builder.query({
-      query: () => `/team`,
+      query: () => `/teamMember`,
       keepUnusedDataFor: 600,
     }),
   }),

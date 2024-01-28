@@ -7,7 +7,7 @@ import {
 } from "../../features/tasks/tasksApi";
 
 const Task = ({ task }) => {
-  const { taskName, deadline, teamMember, project, status, id } = task || {};
+  const { taskName, deadline, teamMember, project, status, _id } = task || {};
   const [inputStatus, setInputStatus] = useState(status || "pending");
   const [updateStatus, {}] = useUpdateStatusMutation();
   const [deleteTask, {}] = useDeleteTaskMutation();
@@ -31,12 +31,12 @@ const Task = ({ task }) => {
 
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <img src={teamMember?.avatar} className="team-avater" />
+          <img src={teamMember?.avatar} className="team-avater" alt="" />
           <p className="lws-task-assignedOn">{teamMember?.name}</p>
         </div>
         {/* <!-- delete button will not shown to the ui, until the status of the task will be completed --> */}
         {inputStatus === "complete" && (
-          <button className="lws-delete" onClick={() => deleteTask(id)}>
+          <button className="lws-delete" onClick={() => deleteTask(_id)}>
             <svg
               fill="none"
               viewBox="0 0 24 24"
@@ -55,7 +55,7 @@ const Task = ({ task }) => {
         {!(inputStatus === "complete") && (
           <button
             className="lws-edit"
-            onClick={() => navigate(`/updateTask/${id}`)}
+            onClick={() => navigate(`/updateTask/${_id}`)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ const Task = ({ task }) => {
           value={inputStatus}
           onChange={(e) => {
             setInputStatus(e.target.value);
-            updateStatus({ id, status: e.target.value });
+            updateStatus({ id: _id, status: e.target.value });
           }}
         >
           <option value="pending">Pending</option>

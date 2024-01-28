@@ -10,11 +10,11 @@ const TeamMembers = () => {
     content = <div>Loadding...</div>;
   } else if (!isLoading && isError) {
     content = <div>{error.message}</div>;
-  } else if (!isLoading && !isError && members.length === 0) {
+  } else if (!isLoading && !isError && members?.payload?.length === 0) {
     content = <div>No member name found !</div>;
-  } else if (!isLoading && !isError && members.length > 0) {
-    content = members.map((member) => (
-      <TeamMember key={member.id} member={member} />
+  } else if (!isLoading && !isError && members?.payload?.length > 0) {
+    content = members?.payload?.map((member) => (
+      <TeamMember key={member._id} member={member} />
     ));
   }
   return (

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import logoImg from "../../assets/images/logo.svg";
 import { setSearchName } from "../../features/projects/projectsSlice";
 
 const Navbar = () => {
@@ -18,7 +17,7 @@ const Navbar = () => {
     <nav className="container relative py-3">
       <div className="flex items-center justify-between">
         <Link href="./index.html" to={"/"}>
-          <img src={logoImg} />
+          <h2 className="font-bold text-3xl">Task Manager</h2>
         </Link>
         <form
           onSubmit={handleSearch}

@@ -13,7 +13,7 @@ const EditTask = () => {
       </h1>
 
       <div className="justify-center mb-10 space-y-2 md:flex md:space-y-0">
-        {isSuccess && <Form task={task} />}
+        {isSuccess && task?.payload && <Form task={task.payload} />}
       </div>
     </main>
   );

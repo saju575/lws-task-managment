@@ -3,26 +3,26 @@ import { useDispatch } from "react-redux";
 import { updateProject } from "../../features/projects/projectsSlice";
 
 const SingleProject = ({ project }) => {
-  const { projectName, colorClass } = project || {};
-  const [check, setCheck] = useState(true);
+  const { focus, isAdded, colorClass } = project || {};
+  const [check, setCheck] = useState(isAdded);
   const dispatch = useDispatch();
 
   return (
     <div className="checkbox-container">
       <input
-        id={projectName}
+        id={focus}
         type="checkbox"
         className={colorClass}
         checked={check}
         onChange={(e) => {
           setCheck(e.target.checked);
           dispatch(
-            updateProject({ focus: projectName, isAdded: e.target.checked })
+            updateProject({ focus, isAdded: e.target.checked, colorClass })
           );
         }}
       />
-      <label htmlFor={projectName} className="label">
-        {projectName}
+      <label htmlFor={focus} className="label">
+        {focus}
       </label>
     </div>
   );

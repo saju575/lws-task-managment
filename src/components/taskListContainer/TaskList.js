@@ -1,11 +1,24 @@
+import Pagination from "@mui/material/Pagination";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../../features/projects/projectsSlice";
 import { useGetTasksQuery } from "../../features/tasks/tasksApi";
 import Task from "./Task";
 
 const TaskList = () => {
-  const { list, jobName } = useSelector((state) => state.projects);
-  const { data: tasks, isLoading, isError, error } = useGetTasksQuery();
+  const { list, jobName, page, status } = useSelector(
+    (state) => state.projects
+  );
+  const dispatch = useDispatch();
+  const {
+    data: tasks,
+    isLoading,
+    isError,
+    error,
+  } = useGetTasksQuery(
+    { projectsName: list, searchField: jobName, page, status }
+    // { refetchOnMountOrArgChange: true }
+  );
 
   //decide what to rander
   let content = null;
@@ -13,31 +26,35 @@ const TaskList = () => {
     content = <div>Loadding...</div>;
   } else if (!isLoading && isError) {
     content = <div>{error.message}</div>;
-  } else if (!isLoading && !isError && tasks.length === 0) {
+  } else if (!isLoading && !isError && tasks?.payload?.data?.length === 0) {
     content = <div>No Job found !</div>;
-  } else if (!isLoading && !isError && tasks.length > 0 && list.length > 0) {
-    let myArrayFiltered = tasks
-      .filter((task) => {
-        if (jobName) {
-          return task.taskName.toLowerCase().includes(jobName.toLowerCase());
-        }
-        return true;
-      })
-      .filter((el) => {
-        return list.some((f) => {
-          return f.focus === el.project.projectName && f.isAdded === true;
-        });
-      });
-
-    if (myArrayFiltered.length === 0) {
-      content = <div>No Job found !</div>;
-    } else {
-      content = myArrayFiltered.map((task) => (
-        <Task key={task.id} task={task} />
-      ));
-    }
+  } else if (
+    !isLoading &&
+    !isError &&
+    tasks?.payload?.data?.length > 0 &&
+    list.length === 0
+  ) {
+    content = <div>No Job found !</div>;
+  } else if (!isLoading && !isError && tasks?.payload?.data?.length > 0) {
+    content = tasks?.payload?.data?.map((task) => (
+      <Task key={task._id} task={task} />
+    ));
   }
-  return <div className="lws-task-list">{content}</div>;
+  return (
+    <div className="lws-task-list">
+      {content}
+      <div className="flex justify-end" style={{ marginTop: "40px" }}>
+        <Pagination
+          count={tasks?.payload?.totalPages}
+          onChange={(_, val) => {
+            dispatch(setPage(val));
+          }}
+          variant="outlined"
+          shape="rounded"
+        />
+      </div>
+    </div>
+  );
 };
 
 export default TaskList;
